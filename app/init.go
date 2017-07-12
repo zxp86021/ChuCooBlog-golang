@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/revel/revel"
+    "os"
 )
 
 var (
@@ -33,7 +34,7 @@ func init() {
 	// register startup functions with OnAppStart
 	// revel.DevMode and revel.RunMode only work inside of OnAppStart. See Example Startup Script
 	// ( order dependent )
-	// revel.OnAppStart(ExampleStartupScript)
+	revel.OnAppStart(CheckStorage)
 	// revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
 }
@@ -48,6 +49,30 @@ var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 	c.Response.Out.Header().Add("X-Content-Type-Options", "nosniff")
 
 	fc[0](c, fc[1:]) // Execute the next filter stage.
+}
+
+func CheckStorage() {
+    if _, err := os.Stat(revel.BasePath + "/storage/posts.json"); os.IsNotExist(err) {
+        // storage/posts.json does not exist
+        fo, err := os.Create(revel.BasePath + "/storage/posts.json")
+
+        if err != nil {
+            panic(err)
+        }
+
+        defer fo.Close()
+    }
+
+    if _, err := os.Stat(revel.BasePath + "/storage/authors.json"); os.IsNotExist(err) {
+        // storage/authors.json does not exist
+        fo, err := os.Create(revel.BasePath + "/storage/authors.json")
+
+        if err != nil {
+            panic(err)
+        }
+
+        defer fo.Close()
+    }
 }
 
 //func ExampleStartupScript() {
