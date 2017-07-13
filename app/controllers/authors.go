@@ -70,18 +70,17 @@ func (c Author) Store(author models.Author, input Input) revel.Result {
 	check(err1)
 
 	for _, element := range json_author_data {
-		q := element.(map[string]interface{})
+		q := element.(map[string]interface {})
+
 		for k, v := range q {
-			if k == "username" && v == input.Username {
-				c.Response.Status = 400
+			if k == "username" {
+				c.Validation.Required(input.Username != v).Message("username 已被使用")
 
-				var msg []interface{}
+				if c.Validation.HasErrors() {
+					c.Response.Status = 400
 
-				jmsg := []byte(`{"Errors": [{"Message": "username 已存在","Key": "input.Username"}]}`)
-
-				json.Unmarshal(jmsg, &msg)
-
-				return c.RenderJSON(msg)
+					return c.RenderJSON(c.Validation)
+				}
 			}
 		}
 	}
