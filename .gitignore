@@ -1,3 +1,6 @@
+#ide config
+.idea/
+
 # Revel framework file
 test-results/
 tmp/

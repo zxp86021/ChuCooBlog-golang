@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/revel/revel"
+    "io/ioutil"
     "os"
 )
 
@@ -52,26 +53,24 @@ var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 }
 
 func CheckStorage() {
+    empty := []byte("[]")
+
     if _, err := os.Stat(revel.BasePath + "/storage/posts.json"); os.IsNotExist(err) {
         // storage/posts.json does not exist
-        fo, err := os.Create(revel.BasePath + "/storage/posts.json")
+        err := ioutil.WriteFile(revel.BasePath + "/storage/posts.json", empty, 0644)
 
         if err != nil {
             panic(err)
         }
-
-        defer fo.Close()
     }
 
     if _, err := os.Stat(revel.BasePath + "/storage/authors.json"); os.IsNotExist(err) {
         // storage/authors.json does not exist
-        fo, err := os.Create(revel.BasePath + "/storage/authors.json")
+        err := ioutil.WriteFile(revel.BasePath + "/storage/authors.json", empty, 0644)
 
         if err != nil {
             panic(err)
         }
-
-        defer fo.Close()
     }
 }
 

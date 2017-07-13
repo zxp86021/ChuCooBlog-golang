@@ -3,11 +3,27 @@
 # This file defines all application routes (Higher priority routes first)
 #
 
-module:testrunner
-# module:jobs
+# module:testrunner
+module:jobs
 
 
 GET     /                                       App.Index
+
+POST    /login                                  App.PostLogin
+GET     /login                                  App.GetLogin
+
+POST    /logout                                 App.PostLogout
+
+GET     /posts                                  Post.Index
+GET     /posts/:post                            Post.Show
+POST    /posts                                  Post.Store
+PATCH   /posts/:post                            Post.Update
+DELETE  /posts/:post                            Post.Destroy
+
+GET     /authors                                Author.Index
+GET     /authors/:author                        Author.Show
+POST    /authors                                Author.Store
+PATCH   /authors/:author                        Author.Update
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
