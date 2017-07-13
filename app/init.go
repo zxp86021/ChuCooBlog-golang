@@ -53,11 +53,9 @@ var HeaderFilter = func(c *revel.Controller, fc []revel.Filter) {
 }
 
 func CheckStorage() {
-    empty := []byte("[]")
-
     if _, err := os.Stat(revel.BasePath + "/storage/posts.json"); os.IsNotExist(err) {
         // storage/posts.json does not exist
-        err := ioutil.WriteFile(revel.BasePath + "/storage/posts.json", empty, 0644)
+        err := ioutil.WriteFile(revel.BasePath + "/storage/posts.json", []byte("[]"), 0644)
 
         if err != nil {
             panic(err)
@@ -66,7 +64,7 @@ func CheckStorage() {
 
     if _, err := os.Stat(revel.BasePath + "/storage/authors.json"); os.IsNotExist(err) {
         // storage/authors.json does not exist
-        err := ioutil.WriteFile(revel.BasePath + "/storage/authors.json", empty, 0644)
+        err := ioutil.WriteFile(revel.BasePath + "/storage/authors.json", []byte("[{\"username\":\"test1\",\"password\":\"test123\",\"name\":\"test\",\"gender\":\"f\",\"address\":\"earth\"}]"), 0644)
 
         if err != nil {
             panic(err)
