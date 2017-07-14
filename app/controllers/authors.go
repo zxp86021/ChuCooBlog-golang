@@ -34,7 +34,7 @@ func (c Author) Show() revel.Result {
 	return c.Todo()
 }
 
-func (c Author) Store(author models.Author, input Input) revel.Result {
+func (c Author) Store(input Input, author models.Author) revel.Result {
     /*   
      *   username
      *   password
