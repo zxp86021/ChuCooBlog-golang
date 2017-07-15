@@ -4,7 +4,15 @@ import (
 	"github.com/revel/revel"
     "io/ioutil"
     "os"
+	//"encoding/json"
+	//"github.com/zxp86021/ChuCooBlog-golang/app/controllers"
 )
+
+type Session map[string]string
+
+type Errors struct {
+	Errors []interface{}
+}
 
 var (
 	// AppVersion revel app version (ldflags)
@@ -38,6 +46,9 @@ func init() {
 	revel.OnAppStart(CheckStorage)
 	// revel.OnAppStart(InitDB)
 	// revel.OnAppStart(FillCache)
+
+	//revel.InterceptFunc(CheckLogin, revel.BEFORE, &controllers.App{})
+	//revel.InterceptMethod(Hotels.checkUser, revel.BEFORE)
 }
 
 // HeaderFilter adds common security headers
@@ -71,6 +82,21 @@ func CheckStorage() {
         }
     }
 }
+
+//func CheckLogin(c *revel.Controller) revel.Result {
+//	if c.Session["username"] == "" {
+//		var errors []interface {}
+//
+//		json.Unmarshal([]byte("[{\"Message\": \"請先登入\"}]"), &errors)
+//
+//		c.Response.Status = 401
+//
+//		return c.RenderJSON(Errors{errors})
+//	}
+//
+//	return nil
+//}
+
 
 //func ExampleStartupScript() {
 //	// revel.DevMod and revel.RunMode work here
