@@ -12,7 +12,7 @@ type Author struct {
 	*revel.Controller
 }
 
-type Input struct {
+type AuthorInput struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Name     string `json:"name"`
@@ -32,7 +32,7 @@ func (c Author) Index() revel.Result {
 
 		json.Unmarshal([]byte("[{\"Message\": \"請先登入\"}]"), &errors)
 
-		c.Response.Status = 404
+		c.Response.Status = 401
 
 		return c.RenderJSON(Errors{errors})
 	}
@@ -60,7 +60,7 @@ func (c Author) Show() revel.Result {
 
 		json.Unmarshal([]byte("[{\"Message\": \"請先登入\"}]"), &errors)
 
-		c.Response.Status = 404
+		c.Response.Status = 401
 
 		return c.RenderJSON(Errors{errors})
 	}
@@ -94,14 +94,7 @@ func (c Author) Show() revel.Result {
 	return c.RenderJSON(Errors{errors})
 }
 
-func (c Author) Store(input Input, author models.Author) revel.Result {
-    /*   
-     *   username
-     *   password
-     *   name
-     *   gender
-     *   address
-     */
+func (c Author) Store(input AuthorInput, author models.Author) revel.Result {
 	c.Params.BindJSON(&input)
 
 	c.Validation.Required(input.Username).Message("username 必填")
@@ -160,13 +153,13 @@ func (c Author) Store(input Input, author models.Author) revel.Result {
 	return c.RenderJSON(author)
 }
 
-func (c Author) Update(input Input) revel.Result {
+func (c Author) Update(input AuthorInput) revel.Result {
 	if c.Session["username"] == "" {
 		var errors []interface{}
 
 		json.Unmarshal([]byte("[{\"Message\": \"請先登入\"}]"), &errors)
 
-		c.Response.Status = 404
+		c.Response.Status = 401
 
 		return c.RenderJSON(Errors{errors})
 	}
